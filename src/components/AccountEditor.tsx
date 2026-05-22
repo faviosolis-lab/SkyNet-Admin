@@ -77,10 +77,10 @@ export default function AccountEditor({ account, onSave, onCancel, onDelete }: P
         monthly_fee: form.monthlyFee,
         due_date: form.dueDate || '---',
         comments: form.comments,
-        ruc: form.ruc || null,
-        billing_email: form.billingEmail || null,
-        contact_name: form.contactName || null,
-        contact_phone: form.contactPhone || null,
+        ruc: form.ruc || undefined,
+        billing_email: form.billingEmail || undefined,
+        contact_name: form.contactName || undefined,
+        contact_phone: form.contactPhone || undefined,
       };
       if (isNew) {
         await createAccount(payload);

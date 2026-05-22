@@ -3,7 +3,7 @@ import type { Account } from '../types';
 import {
   PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend,
 } from 'recharts';
-import { Users, TrendingDown, CheckCircle, AlertCircle, DollarSign } from 'lucide-react';
+import { Users, CheckCircle, AlertCircle, DollarSign } from 'lucide-react';
 
 function parsePeriod(period: string): { year: number; month: number } | null {
   const parts = period.split('-');
