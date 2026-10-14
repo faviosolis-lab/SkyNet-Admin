@@ -10,6 +10,7 @@ import AccountsTable from './components/AccountsTable';
 import AccountEditor from './components/AccountEditor';
 import PaymentHistoryEditor from './components/PaymentHistoryEditor';
 import LinkedUsersPanel from './components/LinkedUsersPanel';
+import InstallBanner from './components/InstallBanner';
 import { ChevronLeft, AlertTriangle } from 'lucide-react';
 
 type Page = 'dashboard' | 'accounts';
@@ -181,6 +182,7 @@ export default function App() {
         )}
       </main>
 
+      <InstallBanner appName="SkyNet Admin" mobileBottomClass="bottom-[calc(5rem+env(safe-area-inset-bottom))]" />
     </div>
   );
 }
