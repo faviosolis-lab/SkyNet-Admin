@@ -127,10 +127,10 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] flex font-sans">
+    <div className="min-h-dvh bg-[#F8FAFC] flex flex-col md:flex-row font-sans">
       <Sidebar activePage={activePage} onPageChange={handlePageChange} userEmail={user.email} onLogout={handleLogout} />
 
-      <main className="flex-1 overflow-y-auto">
+      <main className="flex-1 min-w-0 md:overflow-y-auto pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-0">
         {activePage === 'dashboard' && (
           <Dashboard accounts={accounts} loading={loadingAccounts} />
         )}
@@ -138,10 +138,10 @@ export default function App() {
         {activePage === 'accounts' && view === 'list' && (
           <>
             {loadError && (
-              <div className="m-6 flex items-center gap-3 bg-red-50 text-red-700 p-4 rounded-2xl border border-red-100">
+              <div className="mx-4 mt-4 md:m-6 flex items-center gap-3 bg-red-50 text-red-700 p-4 rounded-2xl border border-red-100">
                 <AlertTriangle size={18} className="shrink-0" />
                 <span className="text-sm font-medium">{loadError}</span>
-                <button onClick={loadAccounts} className="ml-auto text-sm underline">Reintentar</button>
+                <button onClick={loadAccounts} className="ml-auto text-sm underline shrink-0 py-2">Reintentar</button>
               </div>
             )}
             <AccountsTable
@@ -154,15 +154,15 @@ export default function App() {
         )}
 
         {activePage === 'accounts' && view === 'detail' && (
-          <div className="p-8 max-w-4xl mx-auto">
-            <div className="mb-6">
+          <div className="p-4 md:p-8 max-w-4xl mx-auto">
+            <div className="mb-3 md:mb-6">
               <button onClick={handleBack}
-                className="flex items-center gap-2 text-gray-500 hover:text-[#0B1741] text-sm font-medium transition-colors">
+                className="flex items-center gap-1.5 -ml-2 px-2 py-2.5 text-gray-500 hover:text-[#0B1741] text-sm font-medium transition-colors">
                 <ChevronLeft size={18} /> Volver a cuentas
               </button>
             </div>
 
-            <div className="space-y-5">
+            <div className="space-y-4 md:space-y-5">
               {showNewForm && !selectedAccount ? (
                 <AccountEditor account={null} onSave={handleAccountSaved} onCancel={handleBack} />
               ) : selectedAccount ? (

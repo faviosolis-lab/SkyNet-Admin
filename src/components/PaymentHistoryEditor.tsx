@@ -69,40 +69,40 @@ export default function PaymentHistoryEditor({ accountId, history, onChange }: P
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-      <div className="flex items-center justify-between mb-5">
+    <div className="bg-white rounded-2xl border border-gray-200 p-4 md:p-6 shadow-sm">
+      <div className="flex items-center justify-between gap-3 mb-3 md:mb-5">
         <h3 className="font-bold text-[#0F172A]">Historial de Pagos</h3>
         <button onClick={() => { setShowAdd(!showAdd); setAddError(''); }}
-          className="flex items-center gap-1.5 text-sm font-semibold text-[#0B1741] hover:underline">
+          className="flex items-center gap-1.5 -mr-2 px-2 py-2.5 text-sm font-semibold text-[#0B1741] hover:underline">
           <Plus size={15} /> Agregar período
         </button>
       </div>
 
       {showAdd && (
-        <div className="bg-gray-50 rounded-xl p-4 mb-4 flex flex-wrap gap-3 items-end">
+        <div className="bg-gray-50 rounded-xl p-3 md:p-4 mb-4 grid grid-cols-2 md:flex md:flex-wrap gap-3 items-end">
           <div>
             <label className="block text-xs font-semibold text-gray-500 mb-1">Mes</label>
             <select value={newMonth} onChange={e => setNewMonth(e.target.value)}
-              className="px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#0B1741]">
+              className="w-full px-3 py-3 md:py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#0B1741]">
               {MONTHS.map((m, i) => <option key={i} value={String(i + 1)}>{m}</option>)}
             </select>
           </div>
           <div>
             <label className="block text-xs font-semibold text-gray-500 mb-1">Año</label>
             <select value={newYear} onChange={e => setNewYear(e.target.value)}
-              className="px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#0B1741]">
+              className="w-full px-3 py-3 md:py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#0B1741]">
               {YEARS.map(y => <option key={y} value={String(y)}>{y}</option>)}
             </select>
           </div>
-          <div>
+          <div className="col-span-2 md:col-span-1">
             <label className="block text-xs font-semibold text-gray-500 mb-1">Estado</label>
             <select value={newStatus} onChange={e => setNewStatus(e.target.value as PaymentStatusValue)}
-              className="px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#0B1741]">
+              className="w-full px-3 py-3 md:py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#0B1741]">
               {PAYMENT_STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
             </select>
           </div>
           <button onClick={handleAdd} disabled={busy === 'add'}
-            className="px-4 py-2 bg-[#0B1741] text-white rounded-lg text-sm font-semibold hover:bg-opacity-90 disabled:opacity-60">
+            className="col-span-2 md:col-span-1 px-4 py-3 md:py-2 bg-[#0B1741] text-white rounded-lg text-sm font-semibold hover:bg-opacity-90 disabled:opacity-60">
             {busy === 'add' ? 'Guardando...' : 'Agregar'}
           </button>
           {addError && <p className="w-full text-red-500 text-xs mt-1">{addError}</p>}
@@ -118,7 +118,7 @@ export default function PaymentHistoryEditor({ accountId, history, onChange }: P
               <tr className="bg-gray-50 border-b border-gray-100 text-left text-gray-500">
                 <th className="p-3 font-semibold">Período</th>
                 <th className="p-3 font-semibold">Estado</th>
-                <th className="p-3 w-10"></th>
+                <th className="p-1 md:p-3 w-12 md:w-10"></th>
               </tr>
             </thead>
             <tbody>
@@ -129,14 +129,15 @@ export default function PaymentHistoryEditor({ accountId, history, onChange }: P
                     <select value={h.status}
                       onChange={e => handleStatusChange(h.period, e.target.value as PaymentStatusValue)}
                       disabled={busy === h.period}
-                      className={`px-2 py-1 rounded-lg text-xs font-bold border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0B1741] bg-white cursor-pointer disabled:opacity-50 ${PAYMENT_STATUS_COLORS[h.status]}`}>
+                      className={`px-2 py-2 md:py-1 rounded-lg text-xs font-bold border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0B1741] bg-white cursor-pointer disabled:opacity-50 ${PAYMENT_STATUS_COLORS[h.status]}`}>
                       {PAYMENT_STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
                     </select>
                   </td>
-                  <td className="p-3">
+                  <td className="p-1 md:p-3">
                     <button onClick={() => handleDelete(h.period)} disabled={busy === h.period}
-                      className="text-gray-300 hover:text-red-500 transition-colors disabled:opacity-30">
-                      <Trash2 size={14} />
+                      aria-label={`Eliminar ${formatPeriod(h.period)}`}
+                      className="flex items-center justify-center w-11 h-11 md:w-auto md:h-auto text-gray-300 hover:text-red-500 active:text-red-500 transition-colors disabled:opacity-30">
+                      <Trash2 size={16} />
                     </button>
                   </td>
                 </tr>

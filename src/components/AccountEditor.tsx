@@ -51,13 +51,13 @@ export default function AccountEditor({ account, onSave, onCancel, onDelete }: P
       {type === 'select' ? (
         <select value={form[key] as string}
           onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
-          className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1741] bg-white">
+          className="w-full px-3 py-3 md:py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1741] bg-white">
           {STATUS_OPTIONS.map(s => <option key={s} value={s}>{s}</option>)}
         </select>
       ) : (
         <input type={type} value={form[key] as string | number}
           onChange={e => setForm(f => ({ ...f, [key]: type === 'number' ? Number(e.target.value) : e.target.value }))}
-          className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1741]" />
+          className="w-full px-3 py-3 md:py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1741]" />
       )}
     </div>
   );
@@ -123,11 +123,11 @@ export default function AccountEditor({ account, onSave, onCancel, onDelete }: P
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+    <div className="bg-white rounded-2xl border border-gray-200 p-4 md:p-6 shadow-sm">
 
       {showDeleteModal && account && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-[28px] shadow-2xl w-full max-w-md p-8">
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40 backdrop-blur-sm sm:p-4">
+          <div className="bg-white rounded-t-[28px] sm:rounded-[28px] shadow-2xl w-full max-w-md p-6 sm:p-8 pb-[calc(1.5rem+env(safe-area-inset-bottom))] max-h-[90dvh] overflow-y-auto">
             <div className="flex items-center gap-3 mb-4">
               <div className="bg-red-100 p-2.5 rounded-2xl">
                 <AlertTriangle className="text-red-600" size={22} />
@@ -150,17 +150,17 @@ export default function AccountEditor({ account, onSave, onCancel, onDelete }: P
               className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-500 mb-4"
               autoFocus
             />
-            <div className="flex gap-3 justify-end">
+            <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 sm:justify-end">
               <button
                 onClick={() => { setShowDeleteModal(false); setDeleteConfirm(''); }}
-                className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                className="px-4 py-3 sm:py-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
               >
                 Cancelar
               </button>
               <button
                 onClick={handleDelete}
                 disabled={deleteConfirm !== account.name || deleting}
-                className="flex items-center gap-2 px-5 py-2 bg-red-600 text-white rounded-xl text-sm font-bold hover:bg-red-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                className="flex items-center justify-center gap-2 px-5 py-3 sm:py-2 bg-red-600 text-white rounded-xl text-sm font-bold hover:bg-red-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <Trash2 size={15} />
                 {deleting ? 'Eliminando...' : 'Eliminar definitivamente'}
@@ -169,9 +169,9 @@ export default function AccountEditor({ account, onSave, onCancel, onDelete }: P
           </div>
         </div>
       )}
-      <div className="flex items-center justify-between mb-5">
+      <div className="flex items-center justify-between mb-3 md:mb-5">
         <h3 className="font-bold text-[#0F172A]">{isNew ? 'Nueva Cuenta' : 'Datos de la Cuenta'}</h3>
-        <button onClick={onCancel} className="text-gray-400 hover:text-gray-600 transition-colors"><X size={18} /></button>
+        <button onClick={onCancel} aria-label="Cerrar" className="flex items-center justify-center w-10 h-10 -mr-2 text-gray-400 hover:text-gray-600 transition-colors"><X size={18} /></button>
       </div>
 
       {error && <p className="text-red-500 text-sm mb-4 bg-red-50 p-3 rounded-xl">{error}</p>}
@@ -187,7 +187,7 @@ export default function AccountEditor({ account, onSave, onCancel, onDelete }: P
       <div className="mb-5">
         <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Comentarios</label>
         <textarea value={form.comments} onChange={e => setForm(f => ({ ...f, comments: e.target.value }))} rows={3}
-          className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1741] resize-none" />
+          className="w-full px-3 py-3 md:py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1741] resize-none" />
       </div>
 
       <div className="mb-5 border-t border-gray-100 pt-5">
@@ -197,13 +197,13 @@ export default function AccountEditor({ account, onSave, onCancel, onDelete }: P
             <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">RUC</label>
             <input type="text" value={form.ruc} onChange={e => setForm(f => ({ ...f, ruc: e.target.value }))}
               placeholder="Ej: 80012345-6"
-              className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1741]" />
+              className="w-full px-3 py-3 md:py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1741]" />
           </div>
           <div>
             <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Correo para Facturas</label>
             <input type="email" value={form.billingEmail} onChange={e => setForm(f => ({ ...f, billingEmail: e.target.value }))}
               placeholder="facturacion@empresa.com"
-              className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1741]" />
+              className="w-full px-3 py-3 md:py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1741]" />
           </div>
         </div>
         <p className="text-xs font-bold text-[#0B1741] uppercase tracking-widest mb-1">Contacto en Sitio</p>
@@ -213,36 +213,36 @@ export default function AccountEditor({ account, onSave, onCancel, onDelete }: P
             <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Nombre de Contacto</label>
             <input type="text" value={form.contactName} onChange={e => setForm(f => ({ ...f, contactName: e.target.value }))}
               placeholder="Juan López"
-              className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1741]" />
+              className="w-full px-3 py-3 md:py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1741]" />
           </div>
           <div>
             <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Teléfono de Contacto</label>
             <input type="tel" value={form.contactPhone} onChange={e => setForm(f => ({ ...f, contactPhone: e.target.value }))}
               placeholder="0981 123 456"
-              className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1741]" />
+              className="w-full px-3 py-3 md:py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1741]" />
           </div>
         </div>
       </div>
 
-      <div className="flex items-center justify-between gap-2">
+      <div className="flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-3 md:gap-2">
         <div>
           {!isNew && (
             <button
               onClick={() => { setShowDeleteModal(true); setDeleteConfirm(''); }}
-              className="flex items-center gap-2 px-4 py-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-xl text-sm font-semibold transition-colors"
+              className="w-full md:w-auto flex items-center justify-center gap-2 px-4 py-3 md:py-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-xl text-sm font-semibold transition-colors"
             >
               <Trash2 size={15} />
               Eliminar cuenta
             </button>
           )}
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-col-reverse md:flex-row gap-2">
           <button onClick={onCancel}
-            className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
+            className="px-4 py-3 md:py-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
             Cancelar
           </button>
           <button onClick={handleSave} disabled={!isDirty || saving}
-            className="flex items-center gap-2 px-4 py-2 bg-[#0B1741] text-white rounded-xl text-sm font-semibold hover:bg-opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed shadow-sm">
+            className="flex items-center justify-center gap-2 px-4 py-3 md:py-2 bg-[#0B1741] text-white rounded-xl text-sm font-semibold hover:bg-opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed shadow-sm">
             <Save size={15} />
             {saving ? 'Guardando...' : 'Guardar cambios'}
           </button>

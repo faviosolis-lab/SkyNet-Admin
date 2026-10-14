@@ -1,1 +1,26 @@
 @import "tailwindcss";
+
+html {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* iOS Safari hace zoom automático en inputs con fuente < 16px */
+@media (max-width: 767px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+@media (hover: none) {
+  button,
+  select {
+    touch-action: manipulation;
+  }
+}

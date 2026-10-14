@@ -56,26 +56,27 @@ export default function LinkedUsersPanel({ accountId }: Props) {
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-      <div className="flex items-center gap-2 mb-5">
+    <div className="bg-white rounded-2xl border border-gray-200 p-4 md:p-6 shadow-sm">
+      <div className="flex items-center gap-2 mb-3 md:mb-5">
         <Users size={18} className="text-[#0B1741]" />
         <h3 className="font-bold text-[#0F172A]">Usuarios Vinculados</h3>
       </div>
 
       {/* Vincular nuevo usuario */}
-      <div className="flex gap-2 mb-5">
+      <div className="flex flex-col sm:flex-row gap-2 mb-5">
         <input
           type="email"
           value={email}
           onChange={e => setEmail(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && handleLink()}
           placeholder="correo@ejemplo.com"
-          className="flex-1 px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1741]"
+          autoCapitalize="none"
+          className="flex-1 min-w-0 px-3 py-3 md:py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1741]"
         />
         <button
           onClick={handleLink}
           disabled={linking || !email.trim()}
-          className="flex items-center gap-1.5 px-4 py-2.5 bg-[#0B1741] text-white rounded-xl text-sm font-semibold hover:bg-opacity-90 disabled:opacity-50 transition-opacity"
+          className="flex items-center justify-center gap-1.5 px-4 py-3 md:py-2.5 bg-[#0B1741] text-white rounded-xl text-sm font-semibold hover:bg-opacity-90 disabled:opacity-50 transition-opacity"
         >
           <UserPlus size={15} />
           {linking ? '...' : 'Vincular'}
@@ -94,16 +95,17 @@ export default function LinkedUsersPanel({ accountId }: Props) {
         <div className="space-y-2">
           {users.map(u => (
             <div key={u.user_id} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
-              <div>
-                <p className="text-sm font-medium text-[#0F172A]">{u.email}</p>
+              <div className="min-w-0">
+                <p className="text-sm font-medium text-[#0F172A] break-all">{u.email}</p>
                 <p className="text-xs text-gray-400 capitalize mt-0.5">{u.role}</p>
               </div>
               <button
                 onClick={() => handleUnlink(u.user_id, u.email)}
-                className="text-gray-300 hover:text-red-500 transition-colors ml-3"
+                className="flex items-center justify-center w-11 h-11 -mr-2 shrink-0 text-gray-300 hover:text-red-500 active:text-red-500 transition-colors ml-1"
                 title="Desvincular"
+                aria-label={`Desvincular ${u.email}`}
               >
-                <Trash2 size={15} />
+                <Trash2 size={16} />
               </button>
             </div>
           ))}

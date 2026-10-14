@@ -34,8 +34,8 @@ export default function Login({ onLogin }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] flex flex-col justify-center items-center p-4 font-sans">
-      <div className="w-full max-w-md bg-white p-10 rounded-[32px] shadow-sm border border-gray-100">
+    <div className="min-h-dvh bg-[#F8FAFC] flex flex-col justify-center items-center p-4 font-sans">
+      <div className="w-full max-w-md bg-white p-6 sm:p-10 rounded-[28px] sm:rounded-[32px] shadow-sm border border-gray-100">
         <div className="flex flex-col items-center mb-8">
           <div className="bg-[#0B1741] p-3 rounded-2xl mb-4 shadow-lg">
             <ShieldCheck className="text-white" size={32} />
@@ -56,7 +56,7 @@ export default function Login({ onLogin }: Props) {
             <div className="relative">
               <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
               <input type="email" value={email} onChange={e => setEmail(e.target.value)}
-                placeholder="admin@ejemplo.com" required
+                placeholder="admin@ejemplo.com" required autoComplete="email" autoCapitalize="none"
                 className="w-full pl-11 pr-4 py-3 bg-gray-50 rounded-2xl border border-transparent focus:bg-white focus:border-[#0B1741] focus:ring-4 focus:ring-[#0B1741]/10 outline-none transition-all font-medium text-sm" />
             </div>
           </div>
@@ -65,7 +65,7 @@ export default function Login({ onLogin }: Props) {
             <div className="relative">
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
               <input type="password" value={password} onChange={e => setPassword(e.target.value)}
-                placeholder="••••••••" required
+                placeholder="••••••••" required autoComplete="current-password"
                 className="w-full pl-11 pr-4 py-3 bg-gray-50 rounded-2xl border border-transparent focus:bg-white focus:border-[#0B1741] focus:ring-4 focus:ring-[#0B1741]/10 outline-none transition-all font-medium text-sm" />
             </div>
           </div>

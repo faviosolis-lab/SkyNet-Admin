@@ -1,32 +1,10 @@
 import { useMemo } from 'react';
 import type { Account } from '../types';
+import { isPastOrCurrentMonth, calcDebt } from '../lib/utils';
 import {
   PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend,
 } from 'recharts';
 import { Users, CheckCircle, AlertCircle, DollarSign } from 'lucide-react';
-
-function parsePeriod(period: string): { year: number; month: number } | null {
-  const parts = period.split('-');
-  if (parts.length === 3) return { year: parseInt(parts[0]), month: parseInt(parts[2]) };
-  if (parts.length === 2) return { year: parseInt(parts[0]), month: parseInt(parts[1]) };
-  return null;
-}
-
-function isPastOrCurrentMonth(period: string): boolean {
-  const parsed = parsePeriod(period);
-  if (!parsed) return false;
-  const now = new Date();
-  const cy = now.getFullYear();
-  const cm = now.getMonth() + 1;
-  return parsed.year < cy || (parsed.year === cy && parsed.month <= cm);
-}
-
-function calcDebt(account: Account): number {
-  const unpaidMonths = account.paymentHistory.filter(
-    p => isPastOrCurrentMonth(p.period) && (p.status === 'Pendiente' || p.status === 'Demorado')
-  ).length;
-  return unpaidMonths * account.monthlyFee;
-}
 
 const STATUS_COLORS: Record<string, string> = {
   Activo: '#10B981',
@@ -74,14 +52,14 @@ export default function Dashboard({ accounts, loading }: Props) {
   }
 
   return (
-    <div className="p-8 max-w-6xl mx-auto">
-      <header className="mb-8">
-        <p className="text-[13px] uppercase tracking-widest text-[#64748B] font-semibold">Panel de Control</p>
-        <h1 className="text-[30px] font-black text-[#0F172A] mt-1">Dashboard</h1>
+    <div className="p-4 md:p-8 max-w-6xl mx-auto">
+      <header className="mb-5 md:mb-8">
+        <p className="text-[12px] md:text-[13px] uppercase tracking-widest text-[#64748B] font-semibold">Panel de Control</p>
+        <h1 className="text-[24px] md:text-[30px] font-black text-[#0F172A] mt-1">Dashboard</h1>
       </header>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 md:gap-4 mb-5 md:mb-8">
         <KpiCard
           icon={<Users size={20} />}
           label="Total Cuentas"
@@ -113,9 +91,9 @@ export default function Dashboard({ accounts, loading }: Props) {
         />
       </div>
 
-      <div className="mb-6">
+      <div className="mb-4 md:mb-6">
         {/* Pie chart: estado de cuentas */}
-        <div className="bg-white rounded-[28px] p-6 shadow-sm border border-gray-100">
+        <div className="bg-white rounded-[24px] md:rounded-[28px] p-4 md:p-6 shadow-sm border border-gray-100">
           <h3 className="text-sm font-bold text-[#0F172A] mb-1">Distribución por Estado</h3>
           <p className="text-xs text-[#94A3B8] mb-4">Cantidad de cuentas por estado actual</p>
           {stats.byStatus.length > 0 ? (
@@ -144,7 +122,7 @@ export default function Dashboard({ accounts, loading }: Props) {
       </div>
 
       {/* Deuda por cuota mensual */}
-      <div className="bg-white rounded-[28px] p-6 shadow-sm border border-gray-100">
+      <div className="bg-white rounded-[24px] md:rounded-[28px] p-4 md:p-6 shadow-sm border border-gray-100">
         <h3 className="text-sm font-bold text-[#0F172A] mb-1">Detalle de Deuda por Cuenta</h3>
         <p className="text-xs text-[#94A3B8] mb-5">Meses impagos × cuota mensual por cada cuenta con deuda</p>
         {stats.accountsInDebt === 0 ? (
@@ -158,18 +136,18 @@ export default function Dashboard({ accounts, loading }: Props) {
               .map(a => {
                 const pct = stats.totalDebt > 0 ? (a.debt / stats.totalDebt) * 100 : 0;
                 return (
-                  <div key={a.id} className="flex items-center gap-4">
-                    <div className="w-32 shrink-0">
+                  <div key={a.id} className="flex flex-wrap md:flex-nowrap items-center gap-x-4 gap-y-1.5">
+                    <div className="flex-1 min-w-0 md:flex-none md:w-32">
                       <p className="text-[13px] font-bold text-[#0F172A] truncate">{a.name}</p>
                       <p className="text-[11px] text-[#94A3B8]">{a.unpaid} mes{a.unpaid !== 1 ? 'es' : ''} impago{a.unpaid !== 1 ? 's' : ''}</p>
                     </div>
-                    <div className="flex-1 bg-gray-100 rounded-full h-2 overflow-hidden">
+                    <p className="text-[13px] font-bold text-[#0F172A] shrink-0 md:order-3 md:w-32 text-right">{formatCurrency(a.debt)}</p>
+                    <div className="w-full md:w-auto md:flex-1 md:order-2 bg-gray-100 rounded-full h-2 overflow-hidden">
                       <div
                         className="h-full bg-[#0B1741] rounded-full transition-all duration-500"
                         style={{ width: `${pct}%` }}
                       />
                     </div>
-                    <p className="text-[13px] font-bold text-[#0F172A] shrink-0 w-32 text-right">{formatCurrency(a.debt)}</p>
                   </div>
                 );
               })}
@@ -191,11 +169,11 @@ function KpiCard({
   small?: boolean;
 }) {
   return (
-    <div className="bg-white rounded-[24px] p-6 shadow-sm border border-gray-100 flex items-start gap-4">
-      <div className={`${color} ${iconColor} p-3 rounded-2xl shrink-0`}>{icon}</div>
-      <div className="min-w-0">
-        <p className="text-[12px] font-semibold text-[#64748B] uppercase tracking-wide">{label}</p>
-        <p className={`font-black text-[#0F172A] mt-1 leading-none ${small ? 'text-[18px]' : 'text-[30px]'}`}>{value}</p>
+    <div className="bg-white rounded-[20px] md:rounded-[24px] p-4 md:p-6 shadow-sm border border-gray-100 flex flex-col md:flex-row items-start gap-3 md:gap-4">
+      <div className={`${color} ${iconColor} p-2.5 md:p-3 rounded-2xl shrink-0`}>{icon}</div>
+      <div className="min-w-0 w-full">
+        <p className="text-[11px] md:text-[12px] font-semibold text-[#64748B] uppercase tracking-wide">{label}</p>
+        <p className={`font-black text-[#0F172A] mt-1 leading-none truncate ${small ? 'text-[17px] md:text-[18px]' : 'text-[26px] md:text-[30px]'}`}>{value}</p>
       </div>
     </div>
   );

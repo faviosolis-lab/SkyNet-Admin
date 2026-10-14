@@ -1,3 +1,5 @@
+import type { Account } from '../types';
+
 export function getDisplayName(email: string): string {
   return email.split('@')[0].split('.').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ') || 'Usuario';
 }
@@ -34,4 +36,27 @@ export function formatPeriod(periodStr: string): string {
     if (parts.length === 2) return `${MONTHS[parseInt(parts[1], 10) - 1] ?? parts[1]} ${parts[0]}`;
   }
   return periodStr;
+}
+
+function parsePeriod(period: string): { year: number; month: number } | null {
+  const parts = period.split('-');
+  if (parts.length === 3) return { year: parseInt(parts[0]), month: parseInt(parts[2]) };
+  if (parts.length === 2) return { year: parseInt(parts[0]), month: parseInt(parts[1]) };
+  return null;
+}
+
+export function isPastOrCurrentMonth(period: string): boolean {
+  const parsed = parsePeriod(period);
+  if (!parsed) return false;
+  const now = new Date();
+  const cy = now.getFullYear();
+  const cm = now.getMonth() + 1;
+  return parsed.year < cy || (parsed.year === cy && parsed.month <= cm);
+}
+
+export function calcDebt(account: Account): number {
+  const unpaidMonths = account.paymentHistory.filter(
+    p => isPastOrCurrentMonth(p.period) && (p.status === 'Pendiente' || p.status === 'Demorado')
+  ).length;
+  return unpaidMonths * account.monthlyFee;
 }
