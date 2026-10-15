@@ -56,7 +56,7 @@ export function isPastOrCurrentMonth(period: string): boolean {
 
 export function calcDebt(account: Account): number {
   const unpaidMonths = account.paymentHistory.filter(
-    p => isPastOrCurrentMonth(p.period) && (p.status === 'Pendiente' || p.status === 'Demorado')
+    p => isPastOrCurrentMonth(p.period) && p.status === 'Demorado'
   ).length;
   return unpaidMonths * account.monthlyFee;
 }

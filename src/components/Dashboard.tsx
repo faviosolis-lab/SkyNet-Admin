@@ -130,7 +130,7 @@ export default function Dashboard({ accounts, loading }: Props) {
         ) : (
           <div className="space-y-3">
             {accounts
-              .map(a => ({ ...a, debt: calcDebt(a), unpaid: a.paymentHistory.filter(p => isPastOrCurrentMonth(p.period) && (p.status === 'Pendiente' || p.status === 'Demorado')).length }))
+              .map(a => ({ ...a, debt: calcDebt(a), unpaid: a.paymentHistory.filter(p => isPastOrCurrentMonth(p.period) && p.status === 'Demorado').length }))
               .filter(a => a.debt > 0)
               .sort((a, b) => b.debt - a.debt)
               .map(a => {
